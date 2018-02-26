@@ -6,6 +6,11 @@ import model.*;
 
 public interface AssignmentWriter {
 
-    void writeAssignment(Participants participants, Events events, Assignment assignment) throws IOException;
+    void writeAssignment(
+        final Participants participants,
+        final Events events,
+        final Preferences preferences,
+        final Assignment assignment
+    ) throws IOException;
 
 }

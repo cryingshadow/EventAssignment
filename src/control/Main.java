@@ -17,7 +17,7 @@ public class Main {
             final FlowNetwork network = new FlowNetwork(participants, events, preferences, 1);
             network.fordFulkerson();
             final Assignment assignment = network.getAssignment();
-            io.getWriter().writeAssignment(participants, events, assignment);
+            io.getWriter().writeAssignment(participants, events, preferences, assignment);
         } catch (final IOException e) {
             e.printStackTrace();
         }
