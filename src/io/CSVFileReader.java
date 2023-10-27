@@ -1,6 +1,8 @@
 package io;
 
 import java.io.*;
+import java.util.*;
+import java.util.stream.*;
 
 import model.*;
 
@@ -8,8 +10,11 @@ public class CSVFileReader implements InputReader {
 
     private final String filePath;
 
+    private final Random random;
+
     public CSVFileReader(final String filePath) {
         this.filePath = filePath;
+        this.random = new Random();
     }
 
     @Override
@@ -35,8 +40,14 @@ public class CSVFileReader implements InputReader {
         for (int participant = 0; participant < numberOfParticipants; participant++) {
             final String[] columns = reader.readLine().split(";", -1);
             participants.put(participant, columns[0]);
+            List<Integer> missingEvents =
+                new ArrayList<Integer>(IntStream.range(1, numberOfEvents + 1).boxed().toList());
             for (int preference = 1; preference <= numberOfEvents; preference++) {
-                final int event = Integer.parseInt(columns[preference].trim()) - 1;
+                final int event =
+                    preference < columns.length ?
+                        Integer.parseInt(columns[preference].trim()) - 1 :
+                            missingEvents.remove(this.random.nextInt(missingEvents.size()));
+                missingEvents.remove(Integer.valueOf(event));
                 preferences.put(participant, event, preference * preference);
             }
         }
