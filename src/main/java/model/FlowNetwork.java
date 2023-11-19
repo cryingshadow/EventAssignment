@@ -2,12 +2,6 @@ package model;
 
 import java.util.*;
 
-/**
- * Flow network that is structured as follows: From the source, there is an edge to each participant with capacity 1.
- * From each participant to each event, there is also an edge of capacity 1. From each event to the sink, there is an
- * edge with capacity total_flow / number_of_events + tolerance - in_flow_of_event.
- * @author cryingshadow
- */
 public class FlowNetwork {
 
     private final Assignment assignment;
@@ -32,17 +26,14 @@ public class FlowNetwork {
         this.assignment = new Assignment();
     }
 
-    private boolean augment() {
-        final ResidualNetwork residualNetwork = this.computeResidualNetwork();
-        final Optional<Assignment> augmentingAssignment =
-            residualNetwork.getBestAugmentingAssignment();
-        if (!augmentingAssignment.isPresent()) {
-            return false;
+    public void fordFulkerson() {
+        while (this.augment()) {
+            // Ford-Fulkerson
         }
-        for (final Map.Entry<ParticipantId, EventId> assignmentEntry : augmentingAssignment.get().entrySet()) {
-            this.assignment.put(assignmentEntry.getKey(), assignmentEntry.getValue());
-        }
-        return true;
+    }
+
+    public Assignment getAssignment() {
+        return this.assignment;
     }
 
     Set<EventId> computeFreeEvents() {
@@ -65,6 +56,19 @@ public class FlowNetwork {
         return result;
     }
 
+    private boolean augment() {
+        final ResidualNetwork residualNetwork = this.computeResidualNetwork();
+        final Optional<Assignment> augmentingAssignment =
+            residualNetwork.getBestAugmentingAssignment();
+        if (!augmentingAssignment.isPresent()) {
+            return false;
+        }
+        for (final Map.Entry<ParticipantId, EventId> assignmentEntry : augmentingAssignment.get().entrySet()) {
+            this.assignment.put(assignmentEntry.getKey(), assignmentEntry.getValue());
+        }
+        return true;
+    }
+
     private ResidualNetwork computeResidualNetwork() {
         return
             new ResidualNetwork(
@@ -81,16 +85,6 @@ public class FlowNetwork {
         result.addAll(this.participants.keySet());
         result.removeAll(this.assignment.keySet());
         return result;
-    }
-
-    public void fordFulkerson() {
-        while (this.augment()) {
-            // Ford-Fulkerson
-        }
-    }
-
-    public Assignment getAssignment() {
-        return this.assignment;
     }
 
 }

@@ -8,6 +8,23 @@ import model.*;
 
 public class CSVFileReader implements InputReader {
 
+    private static int parseEvents(final BufferedReader reader, final Events events) throws IOException {
+        final String line = CSVFileReader.readNextNonEmptyLine(reader);
+        final int numberOfEvents = Integer.parseInt(line);
+        for (int event = 0; event < numberOfEvents; event++) {
+            events.put(event, reader.readLine());
+        }
+        return numberOfEvents;
+    }
+
+    private static String readNextNonEmptyLine(final BufferedReader reader) throws IOException {
+        String result = "";
+        while ("".equals(result.trim())) {
+            result = reader.readLine();
+        }
+        return result.trim();
+    }
+
     private final String filePath;
 
     private final Random random;
@@ -40,7 +57,7 @@ public class CSVFileReader implements InputReader {
         for (int participant = 0; participant < numberOfParticipants; participant++) {
             final String[] columns = reader.readLine().split(";", -1);
             participants.put(participant, columns[0]);
-            List<Integer> missingEvents =
+            final List<Integer> missingEvents =
                 new ArrayList<Integer>(IntStream.range(1, numberOfEvents + 1).boxed().toList());
             for (int preference = 1; preference <= numberOfEvents; preference++) {
                 final int event =
@@ -51,23 +68,6 @@ public class CSVFileReader implements InputReader {
                 preferences.put(participant, event, preference * preference);
             }
         }
-    }
-
-    private static int parseEvents(final BufferedReader reader, final Events events) throws IOException {
-        final String line = CSVFileReader.readNextNonEmptyLine(reader);
-        final int numberOfEvents = Integer.parseInt(line);
-        for (int event = 0; event < numberOfEvents; event++) {
-            events.put(event, reader.readLine());
-        }
-        return numberOfEvents;
-    }
-
-    private static String readNextNonEmptyLine(final BufferedReader reader) throws IOException {
-        String result = "";
-        while ("".equals(result.trim())) {
-            result = reader.readLine();
-        }
-        return result.trim();
     }
 
 }

@@ -2,8 +2,8 @@ package model;
 
 public class ParticipantAndEventId {
 
-    private final ParticipantId participant;
     private final EventId event;
+    private final ParticipantId participant;
 
     public ParticipantAndEventId(final ParticipantId participant, final EventId event) {
         this.participant = participant;
@@ -19,17 +19,17 @@ public class ParticipantAndEventId {
         return this.getParticipant().equals(other.getParticipant()) && this.getEvent().equals(other.getEvent());
     }
 
-    @Override
-    public int hashCode() {
-        return 2 * this.getParticipant().hashCode() + 3 * this.getEvent().hashCode();
+    public EventId getEvent() {
+        return this.event;
     }
 
     public ParticipantId getParticipant() {
         return this.participant;
     }
 
-    public EventId getEvent() {
-        return this.event;
+    @Override
+    public int hashCode() {
+        return 2 * this.getParticipant().hashCode() + 3 * this.getEvent().hashCode();
     }
 
     @Override

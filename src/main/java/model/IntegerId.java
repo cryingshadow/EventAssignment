@@ -16,13 +16,13 @@ public abstract class IntegerId {
         return this.getId() == ((IntegerId)o).getId();
     }
 
+    public int getId() {
+        return this.id;
+    }
+
     @Override
     public int hashCode() {
         return this.getId();
-    }
-
-    public int getId() {
-        return this.id;
     }
 
     @Override

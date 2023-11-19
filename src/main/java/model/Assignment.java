@@ -2,10 +2,6 @@ package model;
 
 import java.util.*;
 
-/**
- * LinkedHashMap from ParticipantId to EventId.
- * @author cryingshadow
- */
 public class Assignment extends LinkedHashMap<ParticipantId, EventId> {
 
     private static final long serialVersionUID = -7118032527198803847L;

@@ -14,14 +14,14 @@ public class ResidualNetwork {
 
         };
 
-    private final Map<ParticipantId, Integer> participantDistance;
-    private final Map<EventId, Integer> eventDistance;
-    private final Map<ParticipantId, EventId> participantPredecessor;
-    private final Map<EventId, ParticipantId> eventPredecessor;
-    private final Preferences preferences;
-    private final Set<EventId> freeEvents;
     private final Assignment currentAssignment;
+    private final Map<EventId, Integer> eventDistance;
+    private final Map<EventId, ParticipantId> eventPredecessor;
+    private final Set<EventId> freeEvents;
     private final int numberOfEvents;
+    private final Map<ParticipantId, Integer> participantDistance;
+    private final Map<ParticipantId, EventId> participantPredecessor;
+    private final Preferences preferences;
 
     public ResidualNetwork(
         final int numberOfEvents,
