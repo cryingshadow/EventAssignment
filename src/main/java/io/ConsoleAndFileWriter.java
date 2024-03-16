@@ -2,6 +2,7 @@ package io;
 
 import java.io.*;
 import java.util.*;
+import java.util.Map.*;
 import java.util.stream.*;
 
 import model.*;
@@ -58,7 +59,15 @@ public class ConsoleAndFileWriter implements AssignmentWriter {
         final Events events,
         final Assignment assignment
     ) throws IOException {
-        for (final Map.Entry<ParticipantId, EventId> entry : assignment.entrySet()) {
+        final List<Map.Entry<ParticipantId, EventId>> sortedEntries =
+            new ArrayList<Map.Entry<ParticipantId, EventId>>(assignment.entrySet());
+        Collections.sort(sortedEntries, new Comparator<Map.Entry<ParticipantId, EventId>>() {
+            @Override
+            public int compare(final Entry<ParticipantId, EventId> o1, final Entry<ParticipantId, EventId> o2) {
+                return o1.getValue().compareTo(o2.getValue());
+            }
+        });
+        for (final Map.Entry<ParticipantId, EventId> entry : sortedEntries) {
             final String line =
                 String.format("%s -> %s", participants.get(entry.getKey()), events.get(entry.getValue()));
             ConsoleAndFileWriter.writeLine(writer, line);

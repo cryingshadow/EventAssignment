@@ -1,11 +1,16 @@
 package model;
 
-public abstract class IntegerId {
+public abstract class IntegerId implements Comparable<IntegerId> {
 
     private final int id;
 
     public IntegerId(final int id) {
         this.id = id;
+    }
+
+    @Override
+    public int compareTo(final IntegerId o) {
+        return Integer.compare(this.id, o.id);
     }
 
     @Override
