@@ -28,3 +28,4 @@ test-output/
 /bin/
 build/
 .gradle/
+/build.sh
