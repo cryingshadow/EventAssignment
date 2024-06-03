@@ -29,3 +29,5 @@ test-output/
 build/
 .gradle/
 /build.sh
+
+.idea
