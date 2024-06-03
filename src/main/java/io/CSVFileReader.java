@@ -52,20 +52,26 @@ public class CSVFileReader implements InputReader {
         final Preferences preferences,
         final int numberOfEvents
     ) throws IOException {
-        final String line = CSVFileReader.readNextNonEmptyLine(reader);
+        String line = CSVFileReader.readNextNonEmptyLine(reader);
         final int numberOfParticipants = Integer.parseInt(line);
         for (int participant = 0; participant < numberOfParticipants; participant++) {
-            final String[] columns = reader.readLine().split(";", -1);
-            participants.put(participant, columns[0]);
-            final List<Integer> missingEvents =
-                new ArrayList<Integer>(IntStream.range(1, numberOfEvents + 1).boxed().toList());
-            for (int preference = 1; preference <= numberOfEvents; preference++) {
-                final int event =
-                    preference < columns.length ?
-                        Integer.parseInt(columns[preference].trim()) - 1 :
-                            missingEvents.remove(this.random.nextInt(missingEvents.size()));
-                missingEvents.remove(Integer.valueOf(event));
-                preferences.put(participant, event, preference * preference);
+            line = reader.readLine();
+            try {
+                final String[] columns = line.split(";", -1);
+                participants.put(participant, columns[0]);
+                final List<Integer> missingEvents =
+                        new ArrayList<Integer>(IntStream.range(1, numberOfEvents + 1).boxed().toList());
+                for (int preference = 1; preference <= numberOfEvents; preference++) {
+                    final int event =
+                            preference < columns.length ?
+                                    Integer.parseInt(columns[preference].trim()) - 1 :
+                                    missingEvents.remove(this.random.nextInt(missingEvents.size()));
+                    missingEvents.remove(Integer.valueOf(event));
+                    preferences.put(participant, event, preference * preference);
+                }
+            } catch (Exception e) {
+                System.err.printf("Exception while parsing the following line:\n%s\n", line);
+                throw e;
             }
         }
     }
