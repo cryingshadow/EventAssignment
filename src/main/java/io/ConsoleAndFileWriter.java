@@ -57,6 +57,7 @@ public class ConsoleAndFileWriter implements AssignmentWriter {
         final BufferedWriter writer,
         final Participants participants,
         final Events events,
+        final Preferences preferences,
         final Assignment assignment
     ) throws IOException {
         final List<Map.Entry<ParticipantId, EventId>> sortedEntries =
@@ -68,8 +69,9 @@ public class ConsoleAndFileWriter implements AssignmentWriter {
             }
         });
         for (final Map.Entry<ParticipantId, EventId> entry : sortedEntries) {
+            final int preference = (int)Math.sqrt(preferences.get(entry.getKey(), entry.getValue()));
             final String line =
-                String.format("%s -> %s", participants.get(entry.getKey()), events.get(entry.getValue()));
+                String.format("%s -> (%s) %s", participants.get(entry.getKey()), preference, events.get(entry.getValue()));
             ConsoleAndFileWriter.writeLine(writer, line);
         }
     }
@@ -112,7 +114,7 @@ public class ConsoleAndFileWriter implements AssignmentWriter {
         final Assignment assignment
     ) throws IOException {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(new File(this.filePath)))) {
-            ConsoleAndFileWriter.writeAssignment(writer, participants, events, assignment);
+            ConsoleAndFileWriter.writeAssignment(writer, participants, events, preferences, assignment);
             ConsoleAndFileWriter.writeStatistics(writer, participants, events, preferences, assignment);
         }
     }
