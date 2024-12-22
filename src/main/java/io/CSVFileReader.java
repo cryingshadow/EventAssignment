@@ -63,13 +63,13 @@ public class CSVFileReader implements InputReader {
                         new ArrayList<Integer>(IntStream.range(1, numberOfEvents + 1).boxed().toList());
                 for (int preference = 1; preference <= numberOfEvents; preference++) {
                     final int event =
-                            preference < columns.length ?
+                            preference < columns.length && !columns[preference].isBlank() ?
                                     Integer.parseInt(columns[preference].trim()) - 1 :
                                     missingEvents.remove(this.random.nextInt(missingEvents.size()));
                     missingEvents.remove(Integer.valueOf(event));
                     preferences.put(participant, event, preference * preference);
                 }
-            } catch (Exception e) {
+            } catch (final Exception e) {
                 System.err.printf("Exception while parsing the following line:\n%s\n", line);
                 throw e;
             }

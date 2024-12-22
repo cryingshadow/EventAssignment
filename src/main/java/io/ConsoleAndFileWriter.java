@@ -71,7 +71,7 @@ public class ConsoleAndFileWriter implements AssignmentWriter {
         for (final Map.Entry<ParticipantId, EventId> entry : sortedEntries) {
             final int preference = (int)Math.sqrt(preferences.get(entry.getKey(), entry.getValue()));
             final String line =
-                String.format("%s -> (%s) %s", participants.get(entry.getKey()), preference, events.get(entry.getValue()));
+                String.format("%s -> (%d) %s", participants.get(entry.getKey()), preference, events.get(entry.getValue()));
             ConsoleAndFileWriter.writeLine(writer, line);
         }
     }
