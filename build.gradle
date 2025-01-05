@@ -21,11 +21,6 @@ application {
     mainClass = 'control.Main'
 }
 
-java {
-    sourceCompatibility = "1.21"
-    targetCompatibility = "1.21"
-}
-
 jar {
     manifest {
         attributes 'Main-Class': 'control.Main'
